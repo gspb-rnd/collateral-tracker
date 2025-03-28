@@ -1,7 +1,7 @@
 import React from 'react';
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
-import { Search } from "lucide-react";
+import { Search, Home } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
@@ -11,9 +11,21 @@ const Navbar: React.FC = () => {
     navigate('/new-collateral');
   };
 
+  const handleHome = () => {
+    navigate('/');
+  };
+
   return (
-    <nav className="flex items-center justify-between p-4 bg-white border-b shadow-sm">
+    <nav className="flex items-center justify-between p-4 bg-gray-100 border-b shadow-sm">
       <div className="flex items-center space-x-4">
+        <Button 
+          onClick={handleHome}
+          variant="ghost"
+          className="flex items-center gap-2"
+        >
+          <Home className="h-4 w-4" />
+          Home
+        </Button>
         <Button 
           onClick={handleNewCollateral}
           variant="default"
@@ -21,6 +33,8 @@ const Navbar: React.FC = () => {
           New Collateral
         </Button>
       </div>
+      
+      <div className="flex-1"></div>
       
       <div className="flex items-center w-1/3 relative">
         <div className="relative w-full">
@@ -32,8 +46,6 @@ const Navbar: React.FC = () => {
           />
         </div>
       </div>
-      
-      <div className="flex-1"></div>
     </nav>
   );
 };
