@@ -1,13 +1,9 @@
 package com.gspb.collateraltracker.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 
-@Document(collection = "collateralInfo")
 public class Collateral {
     
-    @Id
     private String id;
     private String name;
     private String description;

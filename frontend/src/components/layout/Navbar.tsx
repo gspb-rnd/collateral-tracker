@@ -4,6 +4,7 @@ import { Button } from "../../components/ui/button";
 import { Search, Home } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { Collateral } from '../../types/collateral';
+import { api } from '../../utils/api';
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
@@ -36,19 +37,8 @@ const Navbar: React.FC = () => {
     searchTimeoutRef.current = window.setTimeout(async () => {
       setIsLoading(true);
       try {
-        const mockResults: Collateral[] = [
-          { id: '1', name: `Test ${searchQuery}`, description: 'Test description 1', type: 'Test' },
-          { id: '2', name: `Sample ${searchQuery}`, description: 'Test description 2', type: 'Sample' },
-          { id: '3', name: `Demo ${searchQuery}`, description: 'Test description 3', type: 'Demo' },
-          { id: '4', name: `Example ${searchQuery}`, description: 'Test description 4', type: 'Example' },
-          { id: '5', name: `Collateral ${searchQuery}`, description: 'Test description 5', type: 'Collateral' },
-          { id: '6', name: `Extra ${searchQuery}`, description: 'Test description 6', type: 'Extra' },
-        ].filter(item => 
-          item.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        
-        // const results = await api.get<Collateral[]>(`/api/collateral/search?query=${encodeURIComponent(searchQuery)}`);
-        setSearchResults(mockResults.slice(0, 5)); // Limit to 5 results in dropdown
+        const results = await api.get<Collateral[]>(`/api/collateral/search?query=${encodeURIComponent(searchQuery)}`);
+        setSearchResults(results.slice(0, 5)); // Limit to 5 results in dropdown
         setIsDropdownOpen(true);
       } catch (error) {
         console.error('Error searching collateral:', error);
