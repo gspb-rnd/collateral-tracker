@@ -7,8 +7,16 @@ plugins {
 group = 'com.gspb'
 version = '0.0.1-SNAPSHOT'
 
-sourceCompatibility = '17'
-targetCompatibility = '17'
+// Set source and target compatibility to Java 17 for compilation
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+// Add compatibility with Java 24 for running on newer JVMs
+tasks.withType(JavaCompile) {
+    options.compilerArgs += ['--release', '17']
+    // Enable preview features for Java 24 compatibility
+    options.compilerArgs += ['--enable-preview']
+}
 
 repositories {
     mavenCentral()

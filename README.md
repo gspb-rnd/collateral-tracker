@@ -11,8 +11,27 @@ A web application for tracking collateral information with a React frontend and 
 ## Technology Stack
 
 - Frontend: React with TypeScript, Tailwind CSS, and shadcn/ui components
-- Backend: Java 17, Spring Boot 2.7.18, Gradle
+- Backend: Java 17, Spring Boot 2.7.18, Gradle 8.7
 - Database: MongoDB
+
+## Dependency Versions
+
+### Backend
+- Java: Compatible with Java 17-24
+- Spring Boot: 2.7.18
+- Spring Data MongoDB: 2.7.18
+- Spring Boot Starter Web: 2.7.18
+- Spring Boot Starter Validation: 2.7.18
+- Gradle: 8.7
+
+### Frontend
+- React: 18.3.1
+- TypeScript: 5.6.2
+- Vite: 6.0.1
+- Tailwind CSS: 3.4.16
+- React Router DOM: 7.4.0
+- React Hook Form: 7.54.2
+- Zod: 3.24.2
 
 ## Project Structure
 
