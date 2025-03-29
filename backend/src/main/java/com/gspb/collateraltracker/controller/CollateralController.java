@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/collateral")
+@CrossOrigin(origins = "*")
 public class CollateralController {
 
     @Autowired
