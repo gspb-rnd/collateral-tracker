@@ -4,6 +4,7 @@ import { Button } from "../../components/ui/button";
 import { Search, Home } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { Collateral } from '../../types/collateral';
+import { api } from '../../utils/api';
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ const Navbar: React.FC = () => {
   const [searchResults, setSearchResults] = useState<Collateral[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const searchTimeoutRef = useRef<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -26,6 +28,7 @@ const Navbar: React.FC = () => {
     if (searchQuery.trim().length < 2) {
       setSearchResults([]);
       setIsDropdownOpen(false);
+      setError(null);
       return;
     }
 
@@ -35,23 +38,14 @@ const Navbar: React.FC = () => {
 
     searchTimeoutRef.current = window.setTimeout(async () => {
       setIsLoading(true);
+      setError(null);
       try {
-        const mockResults: Collateral[] = [
-          { id: '1', name: `Test ${searchQuery}`, description: 'Test description 1', type: 'Test' },
-          { id: '2', name: `Sample ${searchQuery}`, description: 'Test description 2', type: 'Sample' },
-          { id: '3', name: `Demo ${searchQuery}`, description: 'Test description 3', type: 'Demo' },
-          { id: '4', name: `Example ${searchQuery}`, description: 'Test description 4', type: 'Example' },
-          { id: '5', name: `Collateral ${searchQuery}`, description: 'Test description 5', type: 'Collateral' },
-          { id: '6', name: `Extra ${searchQuery}`, description: 'Test description 6', type: 'Extra' },
-        ].filter(item => 
-          item.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        
-        // const results = await api.get<Collateral[]>(`/api/collateral/search?query=${encodeURIComponent(searchQuery)}`);
-        setSearchResults(mockResults.slice(0, 5)); // Limit to 5 results in dropdown
+        const results = await api.get<Collateral[]>(`/api/collateral/search?query=${encodeURIComponent(searchQuery)}`);
+        setSearchResults(results.slice(0, 5)); // Limit to 5 results in dropdown
         setIsDropdownOpen(true);
-      } catch (error) {
-        console.error('Error searching collateral:', error);
+      } catch (err) {
+        console.error('Error searching collateral:', err);
+        setError('MongoDB connection error. Please try again later.');
         setSearchResults([]);
       } finally {
         setIsLoading(false);
@@ -119,11 +113,15 @@ const Navbar: React.FC = () => {
             onFocus={() => searchResults.length > 0 && setIsDropdownOpen(true)}
           />
           
-          {isDropdownOpen && searchResults.length > 0 && (
+          {isDropdownOpen && (
             <div className="absolute z-10 mt-1 w-full rounded-md bg-white shadow-lg">
               <div className="py-1">
                 {isLoading ? (
                   <div className="px-4 py-2 text-sm text-gray-500">Loading...</div>
+                ) : error ? (
+                  <div className="px-4 py-2 text-sm text-red-500">{error}</div>
+                ) : searchResults.length === 0 ? (
+                  <div className="px-4 py-2 text-sm text-gray-500">No results found</div>
                 ) : (
                   searchResults.map((result) => (
                     <div 
