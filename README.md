@@ -17,7 +17,7 @@ A web application for tracking collateral information with a React frontend and 
 ## Dependency Versions
 
 ### Backend
-- Java: Compatible with Java 17-24
+- Java: Compatible with Java 17-21
 - Spring Boot: 2.7.18
 - Spring Data MongoDB: 2.7.18
 - Spring Boot Starter Web: 2.7.18
