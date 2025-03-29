@@ -28,21 +28,8 @@ const SearchResults: React.FC = () => {
         setLoading(true);
         setError(null);
         
-        const mockResults: Collateral[] = [
-          { id: '1', name: `Test ${query}`, description: 'Test description 1', type: 'Test' },
-          { id: '2', name: `Sample ${query}`, description: 'Test description 2', type: 'Sample' },
-          { id: '3', name: `Demo ${query}`, description: 'Test description 3', type: 'Demo' },
-          { id: '4', name: `Example ${query}`, description: 'Test description 4', type: 'Example' },
-          { id: '5', name: `Collateral ${query}`, description: 'Test description 5', type: 'Collateral' },
-          { id: '6', name: `Extra ${query}`, description: 'Test description 6', type: 'Extra' },
-        ].filter(item => 
-          item.name.toLowerCase().includes(query.toLowerCase())
-        );
-        
-        // const data = await api.get<Collateral[]>(`/api/collateral/search?query=${encodeURIComponent(query)}`);
-        
-        await new Promise(resolve => setTimeout(resolve, 500));
-        setResults(mockResults);
+        const data = await api.get<Collateral[]>(`/api/collateral/search?query=${encodeURIComponent(query)}`);
+        setResults(data);
       } catch (err) {
         console.error('Error fetching search results:', err);
         setError('Failed to fetch search results. Please try again.');
