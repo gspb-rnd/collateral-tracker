@@ -3,7 +3,9 @@ package com.gspb.collateraltracker.controller;
 import com.gspb.collateraltracker.model.Collateral;
 import com.gspb.collateraltracker.model.CollateralHistory;
 import com.gspb.collateraltracker.model.CollateralVersion;
+import com.gspb.collateraltracker.model.Datapoint;
 import com.gspb.collateraltracker.repository.CollateralRepository;
+import com.gspb.collateraltracker.service.DatapointService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,9 @@ public class CollateralController {
 
     @Autowired
     private CollateralRepository collateralRepository;
+    
+    @Autowired
+    private DatapointService datapointService;
 
     @GetMapping
     public ResponseEntity<List<Collateral>> getAllCollateral() {
@@ -43,8 +48,11 @@ public class CollateralController {
         collateral.setId(java.util.UUID.randomUUID().toString());
         collateral.setCreatedAt(LocalDateTime.now());
         collateral.setUpdatedAt(LocalDateTime.now());
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(collateralRepository.save(collateral));
+        Collateral savedCollateral = collateralRepository.save(collateral);
+        
+        datapointService.createDatapointsForCollateral(savedCollateral.getId());
+        
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedCollateral);
     }
 
     @PutMapping("/{id}")
@@ -75,5 +83,10 @@ public class CollateralController {
                     return ResponseEntity.noContent().<Void>build();
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    
+    @GetMapping("/{id}/datapoints")
+    public ResponseEntity<List<Datapoint>> getDatapointsForCollateral(@PathVariable String id) {
+        return ResponseEntity.ok(datapointService.getDatapointsForCollateral(id));
     }
 }
