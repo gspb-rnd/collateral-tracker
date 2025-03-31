@@ -4,6 +4,7 @@ import com.gspb.collateraltracker.model.Collateral;
 import com.gspb.collateraltracker.model.CollateralHistory;
 import com.gspb.collateraltracker.model.CollateralVersion;
 import com.gspb.collateraltracker.repository.CollateralRepository;
+import com.gspb.collateraltracker.util.DatapointUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -43,6 +45,9 @@ public class CollateralController {
         collateral.setId(java.util.UUID.randomUUID().toString());
         collateral.setCreatedAt(LocalDateTime.now());
         collateral.setUpdatedAt(LocalDateTime.now());
+        
+        DatapointUtils.initializeDatapoints(collateral);
+        
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(collateralRepository.save(collateral));
     }
@@ -73,6 +78,26 @@ public class CollateralController {
                 .map(collateral -> {
                     collateralRepository.delete(collateral);
                     return ResponseEntity.noContent().<Void>build();
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    
+    @PutMapping("/{id}/datapoints/{datapointKey}")
+    public ResponseEntity<Collateral> updateDatapoint(
+            @PathVariable String id,
+            @PathVariable String datapointKey,
+            @RequestBody Map<String, String> requestBody) {
+        
+        String newValue = requestBody.get("value");
+        if (newValue == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        
+        return collateralRepository.findById(id)
+                .map(collateral -> {
+                    DatapointUtils.updateDatapointValue(collateral, datapointKey, newValue);
+                    collateral.setUpdatedAt(LocalDateTime.now());
+                    return ResponseEntity.ok(collateralRepository.save(collateral));
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

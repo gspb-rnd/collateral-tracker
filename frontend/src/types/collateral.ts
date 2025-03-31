@@ -1,3 +1,5 @@
+import { Datapoint } from './datapoint';
+
 export interface Collateral {
   id?: string;
   name: string;
@@ -5,4 +7,5 @@ export interface Collateral {
   type: string;
   createdAt?: string;
   updatedAt?: string;
+  datapoints?: Record<string, Datapoint>;
 }

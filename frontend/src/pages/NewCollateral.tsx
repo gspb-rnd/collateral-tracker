@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { api } from '../utils/api';
 import { Collateral } from '../types/collateral';
+import DatapointList from '../components/DatapointList';
 import { 
   Card,
   CardHeader,
@@ -31,7 +32,7 @@ interface CollateralFormData {
 
 const NewCollateral: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState<Collateral | false>(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   
   const form = useForm<CollateralFormData>({
@@ -49,7 +50,7 @@ const NewCollateral: React.FC = () => {
     try {
       const result = await api.post<Collateral>('/api/collateral', data);
       console.log('Collateral created:', result);
-      setSubmitSuccess(true);
+      setSubmitSuccess(result);
       form.reset();
     } catch (error) {
       console.error('Error creating collateral:', error);
@@ -134,7 +135,8 @@ const NewCollateral: React.FC = () => {
           
           {submitSuccess && (
             <div className="mt-4 p-4 rounded bg-green-50 text-green-700">
-              Collateral created successfully!
+              <p className="font-bold">Collateral created successfully!</p>
+              {submitSuccess.id && <DatapointList collateral={submitSuccess} />}
             </div>
           )}
           
