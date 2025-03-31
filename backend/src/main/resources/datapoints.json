@@ -1,0 +1,29 @@
+{
+    "dp_collateralName": {
+      "type": "Data",
+      "valueType": "String",
+      "displayName": "Collateral Name",
+      "dependencyExpression": "",
+      "description": "The name of your collateral item",
+      "displayType": "freeText",
+      "selectableValues": null,
+      "selectedValues": [],
+      "status": "in progress",
+      "auditLog": []
+    },
+    "dp_collateralType": {
+        "type": "Data",
+        "valueType": "String",
+        "displayName": "Collateral Type",
+        "dependencyExpression": "",
+        "description": "The type of collateral",
+        "displayType": "dropdown",
+        "selectableValues": [
+            "Real Estate",
+            "Other"
+        ],
+        "selectedValues": [],
+        "status": "in progress",
+        "auditLog": []
+      }
+  }
