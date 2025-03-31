@@ -1,0 +1,38 @@
+{
+  "dp_name": {
+    "type": "Data",
+    "valueType": "String",
+    "displayName": "Name",
+    "dependencyExpression": null,
+    "description": "The name of the collateral item",
+    "displayType": "free text",
+    "selectableValues": [],
+    "selectedValues": [],
+    "status": "not started",
+    "auditLog": []
+  },
+  "dp_description": {
+    "type": "Data",
+    "valueType": "String",
+    "displayName": "Description",
+    "dependencyExpression": null,
+    "description": "Detailed description of the collateral",
+    "displayType": "free text",
+    "selectableValues": [],
+    "selectedValues": [],
+    "status": "not started",
+    "auditLog": []
+  },
+  "dp_type": {
+    "type": "Data",
+    "valueType": "String",
+    "displayName": "Collateral Type",
+    "dependencyExpression": null,
+    "description": "The type or category of the collateral",
+    "displayType": "free text",
+    "selectableValues": [],
+    "selectedValues": [],
+    "status": "not started",
+    "auditLog": []
+  }
+}
