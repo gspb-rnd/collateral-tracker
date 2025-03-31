@@ -5,7 +5,7 @@
       "displayName": "Collateral Name",
       "dependencyExpression": "",
       "description": "The name of your collateral item",
-      "displayType": "freeText",
+      "displayType": "free text",
       "selectableValues": null,
       "selectedValues": [],
       "status": "in progress",
