@@ -44,4 +44,14 @@ export const api = {
     fetchApi<T>(endpoint, {
       method: 'DELETE',
     }),
+    
+  updateDatapoint: async <T>(collateralId: string, datapointKey: string, value: string): Promise<T> => {
+    return await fetchApi<T>(`/api/collateral/${collateralId}/datapoints/${datapointKey}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ value }),
+    });
+  }
 };
