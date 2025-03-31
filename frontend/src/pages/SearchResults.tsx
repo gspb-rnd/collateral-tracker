@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { api } from '../utils/api';
 import { Collateral } from '../types/collateral';
 import { 
@@ -8,9 +8,11 @@ import {
   CardTitle,
   CardContent,
 } from "../components/ui/card";
+import { Button } from "../components/ui/button";
 
 const SearchResults: React.FC = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const query = searchParams.get('query') || '';
   const [results, setResults] = useState<Collateral[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -66,8 +68,14 @@ const SearchResults: React.FC = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600 mb-2">{item.description}</p>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center justify-between">
                   <span className="text-sm bg-gray-100 px-2 py-1 rounded">{item.type}</span>
+                  <Button 
+                    onClick={() => navigate(`/update-collateral/${item.id}`)}
+                    variant="outline"
+                  >
+                    Update
+                  </Button>
                 </div>
               </CardContent>
             </Card>

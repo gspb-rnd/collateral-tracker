@@ -38,6 +38,7 @@ public class CollateralController {
 
     @PostMapping
     public ResponseEntity<Collateral> createCollateral(@RequestBody Collateral collateral) {
+        collateral.setId(java.util.UUID.randomUUID().toString());
         collateral.setCreatedAt(LocalDateTime.now());
         collateral.setUpdatedAt(LocalDateTime.now());
         return ResponseEntity.status(HttpStatus.CREATED)
