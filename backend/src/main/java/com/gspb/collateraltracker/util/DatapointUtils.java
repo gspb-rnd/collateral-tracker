@@ -39,9 +39,10 @@ public class DatapointUtils {
         Map<String, Object> datapoints = new HashMap<>();
         
         definitions.forEach((key, value) -> {
-            if (key.startsWith("dp_")) {
-                datapoints.put(key, value);
+            if (!key.startsWith("dp_")) {
+                throw new IllegalArgumentException("Datapoint key must start with 'dp_': " + key);
             }
+            datapoints.put(key, value);
         });
         
         collateral.setDatapoints(datapoints);
