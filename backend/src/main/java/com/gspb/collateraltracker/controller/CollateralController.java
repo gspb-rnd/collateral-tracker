@@ -1,6 +1,8 @@
 package com.gspb.collateraltracker.controller;
 
 import com.gspb.collateraltracker.model.Collateral;
+import com.gspb.collateraltracker.model.CollateralHistory;
+import com.gspb.collateraltracker.model.CollateralVersion;
 import com.gspb.collateraltracker.repository.CollateralRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,6 +51,13 @@ public class CollateralController {
     public ResponseEntity<Collateral> updateCollateral(@PathVariable String id, @RequestBody Collateral collateral) {
         return collateralRepository.findById(id)
                 .map(existingCollateral -> {
+                    CollateralHistory history = collateralRepository.findHistoryById(existingCollateral.getId())
+                            .orElse(new CollateralHistory(existingCollateral.getId()));
+                    
+                    history.addVersion(existingCollateral);
+                    
+                    collateralRepository.saveHistory(history);
+                    
                     existingCollateral.setName(collateral.getName());
                     existingCollateral.setDescription(collateral.getDescription());
                     existingCollateral.setType(collateral.getType());
